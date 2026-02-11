@@ -7,6 +7,7 @@ import OBenitez.ProgramacionNCapasNoviembre25.JPA.Usuario;
 import OBenitez.ProgramacionNCapasNoviembre25.Service.UsuarioService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,12 +28,13 @@ public class LoginRestController {
     private PasswordEncoder passwordEncoder;
     
     @PostMapping("/login")
-    public ResponseEntity LogIn(@RequestBody Usuario usuarioLogin) {
+    public ResponseEntity<String> logIn(@RequestBody Usuario usuarioLogin) {
+        
         Result result = usuarioService.LogInUsuario(usuarioLogin.getUsername());
         if (!result.Correct || result.Object == null) {
-            result.StatusCode = 401;
-            result.ErrorMessage = "Usuario o contraseña incorrectos";
-            return ResponseEntity.status(result.StatusCode).body(result);
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Usuario o contraseña incorrectos");
         }
 
         Usuario usuarioDB = (Usuario) result.Object;
@@ -43,18 +45,15 @@ public class LoginRestController {
         );
 
         if (!passwordOk) {
-            result.Correct = false;
-            result.StatusCode = 401;
-            result.ErrorMessage = "Usuario o contraseña incorrectos";
-            return ResponseEntity.status(result.StatusCode).body(result);
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Usuario o contraseña incorrectos");
         }
 
         String token = jwtUtil.generateToken(usuarioDB.getIdUsuario());
-        result.Correct = true;
-        result.StatusCode = 200;
-        result.Object = token;
-        return ResponseEntity.status(result.StatusCode).body(token);
+        return ResponseEntity.ok(token);
     }
+
 
             
 }
