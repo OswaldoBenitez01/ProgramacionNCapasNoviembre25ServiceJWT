@@ -108,7 +108,6 @@ public class SeguridadControllerService {
         return result;
     }
     
-
     public Authentication obtenerAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }

@@ -141,7 +141,6 @@ public class UsuarioService {
                 return resultUsuario;
             }
             
-            // Buscar usuario solicitado
             Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
             if (!usuario.isPresent()) {
                 result.Correct = false;
@@ -176,7 +175,6 @@ public class UsuarioService {
         Result result = new Result();
 
         try {
-            // Este método es para autenticación, no requiere validación de JWT
             Usuario usuario = usuarioRepository.findByUsername(username);
             if (usuario == null || usuario.getIdUsuario() == 0) {
                 result.Correct = false;
@@ -203,7 +201,7 @@ public class UsuarioService {
         Result result = new Result();
         
         try {
-            // Validar estructura básica
+            // Validar estructur
             if (usuario == null) {
                 result.Correct = false;
                 result.ErrorMessage = "Debe proporcionar un usuario válido";
