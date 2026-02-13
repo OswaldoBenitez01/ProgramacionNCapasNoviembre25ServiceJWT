@@ -1,6 +1,7 @@
 
 package OBenitez.ProgramacionNCapasNoviembre25.JPA;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,7 +35,7 @@ public class Direccion {
     
     @ManyToOne
     @JoinColumn(name = "idusuario")
-    @JsonIgnore
+    @JsonBackReference
     public Usuario usuario;
     
     //GETTERS Y SETTERS

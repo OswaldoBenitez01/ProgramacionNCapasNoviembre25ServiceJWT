@@ -2,6 +2,7 @@
 package OBenitez.ProgramacionNCapasNoviembre25.JPA;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -72,6 +73,7 @@ public class Usuario {
     public Rol rol;
     
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonManagedReference
     public List<Direccion> direcciones = new ArrayList<>();
 
     //GETTERS Y SETTERS
