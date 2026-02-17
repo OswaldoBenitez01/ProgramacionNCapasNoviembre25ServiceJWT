@@ -31,7 +31,7 @@ public class UsuarioService {
 
     // ======================= GET ======================
     public Result GetAll() {
-        Result result = new Result();
+    Result result = new Result();
 
         try {
             // Obtener usuario autenticado
@@ -39,7 +39,7 @@ public class UsuarioService {
             if (!resultUsuario.Correct) {
                 return resultUsuario;
             }
-            
+
             // Verificar que sea administrativo
             Authentication auth = seguridadService.obtenerAuthentication();
             if (!seguridadService.esAdministrativo(auth)) {
@@ -50,18 +50,11 @@ public class UsuarioService {
             }
 
             List<Usuario> usuarios = usuarioRepository.findAllByOrderByIdUsuarioAsc();
-            if (usuarios.isEmpty()) {
-                result.Correct = false;
-                result.ErrorMessage = "No se encontraron usuarios";
-                result.Objects = new ArrayList<>();
-                result.StatusCode = 404;
-                return result;
-            }
-            
-            result.Objects = new ArrayList<>(usuarios);
+
             result.Correct = true;
             result.StatusCode = 200;
-            
+            result.Objects = new ArrayList<>(usuarios); // puede ir vacía sin problema
+
         } catch (Exception ex) {
             result.Correct = false;
             result.ErrorMessage = "Error interno del servidor: " + ex.getLocalizedMessage();
@@ -70,6 +63,7 @@ public class UsuarioService {
         }
         return result;
     }
+
 
     public Result BusquedaAbierta(Usuario usuario) {
         Result result = new Result();

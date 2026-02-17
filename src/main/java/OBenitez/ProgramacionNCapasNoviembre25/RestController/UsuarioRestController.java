@@ -5,6 +5,7 @@ import OBenitez.ProgramacionNCapasNoviembre25.JPA.Direccion;
 import OBenitez.ProgramacionNCapasNoviembre25.JPA.Result;
 import OBenitez.ProgramacionNCapasNoviembre25.JPA.Rol;
 import OBenitez.ProgramacionNCapasNoviembre25.JPA.Usuario;
+import OBenitez.ProgramacionNCapasNoviembre25.Service.SeguridadControllerService;
 import OBenitez.ProgramacionNCapasNoviembre25.Service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -45,6 +47,8 @@ public class UsuarioRestController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private SeguridadControllerService seguridadControllerService;
 
     @GetMapping
     @Operation(
@@ -60,6 +64,12 @@ public class UsuarioRestController {
     })
     public ResponseEntity GetAll() {
         Result result = usuarioService.GetAll();
+        return ResponseEntity.status(result.StatusCode).body(result);
+    }
+    
+    @GetMapping("/me")
+    public ResponseEntity getUsuarioAutenticado(HttpServletRequest request) {
+        Result result = seguridadControllerService.obtenerUsuarioAutenticado();
         return ResponseEntity.status(result.StatusCode).body(result);
     }
 
